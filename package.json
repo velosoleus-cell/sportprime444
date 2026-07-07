@@ -1,0 +1,27 @@
+{
+  "name": "sportprime-node",
+  "version": "1.0.0",
+  "description": "Sport Prime — sportswear e-commerce site with admin panel (Node.js / Express edition)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-rate-limit": "^8.5.2",
+    "express-session": "^1.18.0",
+    "google-auth-library": "^10.9.0",
+    "helmet": "^7.2.0",
+    "mongoose": "^8.24.1",
+    "multer": "^2.2.0",
+    "pdfkit": "^0.19.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
