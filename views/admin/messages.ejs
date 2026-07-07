@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('../partials/head') %></head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <div class="admin-main">
+    <div class="admin-top"><div><h2>Contact Messages</h2><p>Messages submitted through the Contact Us form</p></div></div>
+
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Name</th><th>Email</th><th>Message</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody>
+          <% if (messages.length === 0) { %>
+            <tr><td colspan="5" style="text-align:center;color:var(--text-faint);padding:30px;">No messages yet.</td></tr>
+          <% } else { messages.forEach(m => { %>
+            <tr style="<%= !m.read ? 'background:rgba(226,0,26,.05);' : '' %>">
+              <td><%= m.name %></td>
+              <td><%= m.email %></td>
+              <td style="max-width:280px;white-space:normal;"><%= m.message %></td>
+              <td><%= new Date(m.date).toLocaleDateString() %></td>
+              <td class="row-actions">
+                <% if (!m.read) { %>
+                  <form action="/admin/messages/<%= m._id %>/read" method="post">
+                    <button type="submit" title="Mark as read">✔️</button>
+                  </form>
+                <% } %>
+                <form action="/admin/messages/<%= m._id %>/delete" method="post" onsubmit="return confirm('Delete this message?');">
+                  <button type="submit" title="Delete">🗑</button>
+                </form>
+              </td>
+            </tr>
+          <% }) } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

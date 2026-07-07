@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section>
+  <div class="container" style="max-width:640px;">
+    <div class="form-panel" style="max-width:100%;text-align:center;">
+      <span class="tag" style="color:var(--red-bright);">Order Status</span>
+      <h2 style="margin:8px 0;">Track Your Order</h2>
+      <p style="color:var(--text-dim);font-size:14px;margin-bottom:20px;">Enter the Order ID from your confirmation (tracking ID once assigned).</p>
+
+      <form action="/track" method="get" style="display:flex;gap:10px;max-width:420px;margin:0 auto;">
+        <input type="text" name="query" placeholder="e.g. SP-10234 or TRK-928311" required style="flex:1;">
+        <button type="submit" class="btn">Track</button>
+      </form>
+
+      <% if (notFound) { %>
+        <p style="color:var(--text-faint);margin-top:24px;">
+          No order found for "<b><%= notFound %></b>". Double-check the ID from your order confirmation.
+        </p>
+      <% } %>
+
+      <% if (order) { %>
+        <div style="text-align:left;margin-top:26px;background:var(--bg-elevated);border:1px solid var(--border-light);padding:22px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:6px;">
+            <div>
+              <b style="font-family:var(--font-display);font-size:17px;"><%= order.orderCode %></b>
+              <span style="color:var(--text-faint);font-size:12.5px;"> · Tracking <%= order.trackingId || 'not yet assigned' %></span>
+            </div>
+            <span class="status-pill status-<%= order.status %>"><%= order.status %></span>
+          </div>
+          <p style="color:var(--text-faint);font-size:13px;margin-bottom:6px;">
+            Placed on <%= new Date(order.date).toLocaleDateString() %> · Total <%= money(order.total) %>
+          </p>
+
+          <% if (order.status !== 'Cancelled') { %>
+            <div class="track-steps">
+              <% steps.forEach(s => { %>
+                <div class="track-step <%= steps.indexOf(s) <= steps.indexOf(order.status) ? 'done' : '' %>">
+                  <div class="dot"></div>
+                  <span><%= s %></span>
+                </div>
+              <% }) %>
+            </div>
+            <% if (!order.trackingId) { %>
+              <p style="color:var(--text-faint);font-size:12.5px;text-align:center;margin-top:6px;">
+                Your tracking ID will appear here once our team processes this order.
+              </p>
+            <% } %>
+          <% } else { %>
+            <p style="color:#ff6b6b;font-size:13px;margin-top:10px;">This order was cancelled.</p>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

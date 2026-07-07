@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section>
+  <div class="container" style="max-width:560px;">
+    <div class="section-head"><div><span class="tag">Almost There</span><h2>Checkout</h2></div></div>
+
+    <% if (error) { %><div class="alert"><%= error %></div><% } %>
+    <% if (!paymentsConfigured) { %>
+      <div class="alert">Online payment isn't configured on this store yet. The site owner needs to add Safepay API keys (see README.md).</div>
+    <% } %>
+
+    <div class="form-panel" style="max-width:100%;">
+      <form action="/checkout" method="post">
+        <div class="field"><label>Full Name</label><input type="text" name="name" value="<%= user ? user.name : '' %>" required></div>
+        <div class="field-row">
+          <div class="field"><label>Phone Number</label><input type="text" name="phone" required></div>
+          <div class="field"><label>Email</label><input type="email" name="email" value="<%= user ? user.email : '' %>"></div>
+        </div>
+        <div class="field"><label>Delivery Address</label><textarea name="address" required></textarea></div>
+
+        <div class="field">
+          <label>Payment Method</label>
+          <div style="display:flex;align-items:center;gap:10px;background:var(--bg-input);border:1px solid var(--border-light);padding:12px 14px;">
+            <span style="font-size:18px;">💳</span>
+            <span style="font-size:13.5px;color:var(--text-dim);">Online Payment (Card) — secured by Safepay. This store accepts card payment only.</span>
+          </div>
+        </div>
+
+        <div style="margin:18px 0;">
+          <div class="summary-row"><span>Items (<%= totals.qty %>)</span><span><%= money(totals.subtotal) %></span></div>
+          <% if (totals.discount > 0) { %>
+            <div class="summary-row discount"><span>Sale Discount</span><span>-<%= money(totals.discount) %></span></div>
+          <% } %>
+          <div class="summary-row total"><span>Total Payable</span><span><%= money(totals.total) %></span></div>
+        </div>
+
+        <button type="submit" class="btn" style="width:100%;justify-content:center;" <%= !paymentsConfigured ? 'disabled' : '' %>>Continue to Secure Payment</button>
+      </form>
+      <p style="font-size:12px;color:var(--text-faint);margin-top:14px;">You'll be redirected to Safepay's secure payment page. Your tracking ID and invoice will be issued by our team once the order is reviewed.</p>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

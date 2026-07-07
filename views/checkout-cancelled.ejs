@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section>
+  <div class="container" style="max-width:560px;">
+    <div class="invoice-box" style="text-align:center;padding:50px 34px;">
+      <div style="font-size:44px;margin-bottom:14px;">⚠️</div>
+      <h2 style="margin-bottom:10px;color:#111;">Payment Cancelled</h2>
+      <p style="color:#555;margin:0 auto 22px;">
+        Your payment wasn't completed<% if (orderCode) { %> for order <b><%= orderCode %></b><% } %>, so nothing was charged.
+        The items are still in your cart if you'd like to try again.
+      </p>
+      <a href="/cart" class="btn">Back to Cart</a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

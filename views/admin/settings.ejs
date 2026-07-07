@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('../partials/head') %></head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <div class="admin-main">
+    <div class="admin-top"><div><h2>Settings</h2><p>Admin account preferences</p></div></div>
+
+    <div class="form-panel" style="max-width:420px;">
+      <h4 style="margin-bottom:16px;">Change Admin Password</h4>
+      <% if (error) { %><div class="alert"><%= error %></div><% } %>
+      <% if (success) { %><div class="alert success"><%= success %></div><% } %>
+      <form action="/admin/settings/password" method="post">
+        <div class="field"><label>Current Password</label><input type="password" name="currentPassword" required></div>
+        <div class="field"><label>New Password</label><input type="password" name="newPassword" required></div>
+        <button type="submit" class="btn">Update Password</button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('../partials/head') %></head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <div class="admin-main">
+    <div class="admin-top">
+      <div>
+        <h2><%= product ? 'Edit Product' : 'Add Product' %></h2>
+        <p>Products can only be created or edited from this admin panel</p>
+      </div>
+    </div>
+
+    <div class="form-panel" style="max-width:560px;">
+      <form action="/admin/products/save" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<%= product ? product._id : '' %>">
+
+        <div class="field"><label>Product Name</label><input type="text" name="name" value="<%= product ? product.name : '' %>" required></div>
+
+        <div class="field">
+          <label>Category</label>
+          <select name="category" required>
+            <% categories.forEach(c => { %>
+              <option value="<%= c.id %>" <%= product && product.category === c.id ? 'selected' : '' %>><%= c.name %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Product Image (JPG/PNG)</label>
+          <input type="file" name="imageFile" accept="image/*">
+          <% if (product && product.image) { %>
+            <div style="margin-top:12px;">
+              <img src="/uploads/<%= product.image %>" style="width:110px;height:110px;object-fit:cover;border:1px solid var(--border-light);">
+              <label style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12.5px;color:var(--text-dim);font-family:var(--font-body);text-transform:none;letter-spacing:0;">
+                <input type="checkbox" name="removeImage" value="true" style="width:auto;"> Remove current image
+              </label>
+            </div>
+          <% } %>
+        </div>
+
+        <div class="field-row">
+          <div class="field"><label>Price (Rs)</label><input type="number" step="0.01" name="price" value="<%= product ? product.price : '' %>" required></div>
+          <div class="field"><label>Stock Quantity</label><input type="number" name="stock" value="<%= product ? product.stock : '' %>" required></div>
+        </div>
+
+        <div class="field"><label>Available Sizes (comma separated, leave blank if N/A)</label><input type="text" name="sizes" value="<%= product ? product.sizes.join(', ') : '' %>" placeholder="S, M, L, XL"></div>
+        <div class="field"><label>Description</label><textarea name="description"><%= product ? product.description : '' %></textarea></div>
+
+        <button type="submit" class="btn" style="width:100%;justify-content:center;">Save Product</button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

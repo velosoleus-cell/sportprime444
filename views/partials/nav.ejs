@@ -1,0 +1,57 @@
+<header>
+  <div class="navwrap">
+    <a href="/" class="brand">
+      <img src="/images/logo.png" alt="Sport Prime logo">
+      <span class="name">SPORT<span>PRIME</span></span>
+    </a>
+    <nav class="mainnav">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/shop">Shop</a></li>
+        <li><a href="/track">Track Order</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <% if (user) { %>
+        <span class="user-chip">
+          <% if (user.picture) { %><img src="<%= user.picture %>" class="user-avatar" alt=""><% } %>
+          <%= user.name.split(' ')[0] %>
+        </span>
+        <a href="/auth/logout" class="icon-link">Sign Out</a>
+      <% } else if (googleClientId) { %>
+        <div id="g_id_onload"
+             data-client_id="<%= googleClientId %>"
+             data-callback="handleGoogleSignIn"
+             data-auto_prompt="false"></div>
+        <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-size="medium" data-text="signin_with"></div>
+      <% } %>
+      <a href="/admin/login" class="icon-link">Admin</a>
+      <a href="/cart" class="icon-link">Cart</a>
+    </div>
+  </div>
+  <% if (settings && settings.saleLive) { %>
+    <div class="sale-banner">
+      🔥 <%= settings.saleText %> — <%= settings.saleDiscount %>% OFF STOREWIDE 🔥
+    </div>
+  <% } %>
+</header>
+
+<% if (googleClientId && !user) { %>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+    function handleGoogleSignIn(response) {
+      fetch('/auth/google/callback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: response.credential })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) location.reload();
+          else alert(data.error || 'Sign-in failed.');
+        })
+        .catch(() => alert('Sign-in failed. Please try again.'));
+    }
+  </script>
+<% } %>

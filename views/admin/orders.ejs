@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('../partials/head') %></head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <div class="admin-main">
+    <div class="admin-top"><div><h2>Orders</h2><p>Manage orders — tracking IDs and invoices are generated manually here</p></div></div>
+
+    <div class="admin-toolbar">
+      <form action="/admin/orders" method="get">
+        <select name="status" class="search-mini" onchange="this.form.submit()">
+          <option value="">All Status</option>
+          <% statuses.forEach(s => { %>
+            <option value="<%= s %>" <%= activeStatus === s ? 'selected' : '' %>><%= s %></option>
+          <% }) %>
+        </select>
+      </form>
+    </div>
+
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Tracking</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody>
+          <% if (orders.length === 0) { %>
+            <tr><td colspan="9" style="text-align:center;color:var(--text-faint);padding:30px;">No orders found.</td></tr>
+          <% } else { orders.forEach(o => { %>
+            <tr>
+              <td><code class="trackid"><%= o.orderCode %></code></td>
+              <td><%= o.customer.name %><br><span style="color:var(--text-faint);font-size:11.5px;"><%= o.customer.phone %></span></td>
+              <td><%= o.items.reduce((a, i) => a + i.qty, 0) %> item(s)</td>
+              <td><%= money(o.total) %></td>
+              <td><span class="pay-badge <%= o.paymentStatus %>"><%= o.paymentStatus %></span></td>
+              <td>
+                <% if (o.trackingId) { %>
+                  <code class="trackid"><%= o.trackingId %></code>
+                <% } else { %>
+                  <form action="/admin/orders/<%= o._id %>/generate-tracking" method="post">
+                    <button type="submit" class="btn ghost small">+ Generate ID</button>
+                  </form>
+                <% } %>
+              </td>
+              <td>
+                <form action="/admin/orders/<%= o._id %>/status" method="post">
+                  <select name="status" class="search-mini" style="min-width:0;" onchange="this.form.submit()">
+                    <% statuses.forEach(s => { %>
+                      <option value="<%= s %>" <%= o.status === s ? 'selected' : '' %>><%= s %></option>
+                    <% }) %>
+                  </select>
+                </form>
+              </td>
+              <td><%= new Date(o.date).toLocaleDateString() %></td>
+              <td class="row-actions">
+                <a href="/admin/orders/<%= o._id %>/invoice" title="Generate / View Invoice">🧾</a>
+              </td>
+            </tr>
+          <% }) } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

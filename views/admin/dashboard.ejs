@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('../partials/head') %></head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <div class="admin-main">
+    <div class="admin-top"><div><h2>Dashboard</h2><p>Overview of your store performance</p></div></div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="lbl">Total Orders</div><b><%= totalOrders %></b></div>
+      <div class="stat-card"><div class="lbl">Revenue</div><b><%= money(revenue) %></b></div>
+      <div class="stat-card"><div class="lbl">Products Listed</div><b><%= totalProducts %></b></div>
+      <div class="stat-card"><div class="lbl">Live Sale</div><b style="<%= settings.saleLive ? 'color:var(--red-bright);' : '' %>"><%= settings.saleLive ? 'LIVE' : 'OFF' %></b></div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody>
+          <% if (recentOrders.length === 0) { %>
+            <tr><td colspan="5" style="text-align:center;color:var(--text-faint);padding:30px;">No orders yet.</td></tr>
+          <% } else { recentOrders.forEach(o => { %>
+            <tr>
+              <td><code class="trackid"><%= o.orderCode %></code></td>
+              <td><%= o.customer.name %></td>
+              <td><%= money(o.total) %></td>
+              <td><span class="status-pill status-<%= o.status %>"><%= o.status %></span> <span class="pay-badge <%= o.paymentStatus %>"><%= o.paymentStatus %></span></td>
+              <td><%= new Date(o.date).toLocaleDateString() %></td>
+            </tr>
+          <% }) } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

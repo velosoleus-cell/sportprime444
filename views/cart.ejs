@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section>
+  <div class="container" style="max-width:640px;">
+    <div class="section-head"><div><span class="tag">Checkout</span><h2>Your Cart</h2></div></div>
+
+    <% if (cart.length === 0) { %>
+      <div style="text-align:center;padding:50px 20px;color:var(--text-faint);">
+        Your cart is empty.<br><br>
+        <a href="/shop" class="btn small">Browse Products</a>
+      </div>
+    <% } else { %>
+      <% cart.forEach((item, index) => { %>
+        <div class="cart-item">
+          <div class="ci-media"><span class="cat-icon-svg"><%- categoryIconSvg(item.category, 24) %></span></div>
+          <div class="ci-info">
+            <b><%= item.name %></b>
+            <span>
+              <% if (item.size) { %>Size: <%= item.size %> · <% } %>
+              Qty: <%= item.qty %>
+            </span>
+            <form action="/cart/remove" method="post" style="margin-top:4px;">
+              <input type="hidden" name="index" value="<%= index %>">
+              <button type="submit" style="color:var(--text-faint);font-size:12px;text-decoration:underline;">Remove</button>
+            </form>
+          </div>
+          <div style="font-family:var(--font-display);font-weight:700;"><%= money(item.price * item.qty) %></div>
+        </div>
+      <% }) %>
+
+      <div style="margin-top:20px;">
+        <div class="summary-row"><span>Subtotal</span><span><%= money(totals.subtotal) %></span></div>
+        <% if (totals.discount > 0) { %>
+          <div class="summary-row discount"><span>Sale Discount</span><span>-<%= money(totals.discount) %></span></div>
+        <% } %>
+        <div class="summary-row total"><span>Total</span><span><%= money(totals.total) %></span></div>
+      </div>
+      <a href="/checkout" class="btn" style="width:100%;justify-content:center;margin-top:16px;">Proceed To Checkout</a>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

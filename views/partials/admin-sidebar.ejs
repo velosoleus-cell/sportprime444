@@ -1,0 +1,14 @@
+<div class="admin-side">
+  <div class="brand"><img src="/images/logo.png" style="width:34px;height:34px;"><span class="name" style="font-size:16px;">SPORT<span>PRIME</span></span></div>
+  <a class="admin-nav-item <%= active === 'dashboard' ? 'active' : '' %>" href="/admin/dashboard">📊 Dashboard</a>
+  <a class="admin-nav-item <%= active === 'sale' ? 'active' : '' %>" href="/admin/sale">🔥 Live Sale</a>
+  <a class="admin-nav-item <%= active === 'products' ? 'active' : '' %>" href="/admin/products">👕 Products</a>
+  <a class="admin-nav-item <%= active === 'orders' ? 'active' : '' %>" href="/admin/orders">
+    📦 Orders <% if (pendingCount > 0) { %><span class="n"><%= pendingCount %></span><% } %>
+  </a>
+  <a class="admin-nav-item <%= active === 'messages' ? 'active' : '' %>" href="/admin/messages">
+    ✉️ Messages <% if (unreadMessages > 0) { %><span class="n"><%= unreadMessages %></span><% } %>
+  </a>
+  <a class="admin-nav-item <%= active === 'settings' ? 'active' : '' %>" href="/admin/settings">⚙️ Settings</a>
+  <a class="exit" href="/admin/logout">&larr; Exit to Storefront</a>
+</div>

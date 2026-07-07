@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('../partials/head') %></head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <div class="admin-main">
+    <div class="admin-top"><div><h2>Live Sale Control</h2><p>Turn on a storewide discount instantly</p></div></div>
+
+    <div class="form-panel" style="max-width:100%;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+        <div>
+          <h3 style="font-size:18px;">Sale Status</h3>
+          <p style="color:var(--text-faint);font-size:13px;margin-top:4px;">When ON, every product on the site shows the discounted price automatically.</p>
+        </div>
+        <form action="/admin/sale/toggle" method="post">
+          <button type="submit" class="toggle-btn <%= settings.saleLive ? 'on' : '' %>"><div class="knob"></div></button>
+        </form>
+      </div>
+
+      <form action="/admin/sale/update" method="post" style="display:flex;gap:20px;margin-top:24px;flex-wrap:wrap;align-items:flex-end;">
+        <div class="field" style="margin-bottom:0;">
+          <label>Discount %</label>
+          <input type="number" name="discountPercent" min="1" max="90" value="<%= settings.saleDiscount %>" style="max-width:120px;">
+        </div>
+        <div class="field" style="margin-bottom:0;min-width:280px;">
+          <label>Sale Banner Text</label>
+          <input type="text" name="bannerText" value="<%= settings.saleText %>">
+        </div>
+        <button type="submit" class="btn">Save Settings</button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

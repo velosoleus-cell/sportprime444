@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">Built For Athletes</span>
+      <h1>GEAR THAT<br>HITS HARDER.</h1>
+      <p class="lead">Sport Prime designs and manufactures performance sportswear for fighters, footballers and gridiron athletes — boxing gloves, jerseys and gear made to compete.</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="/shop" class="btn">Shop Collection</a>
+        <a href="/contact" class="btn ghost">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="/images/logo.png" alt="Sport Prime">
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div><span class="tag">What We Make</span><h2>Shop By Category</h2></div>
+      <p>From the ring to the field — every category is built with the same obsession over durability and fit.</p>
+    </div>
+    <div class="cat-grid">
+      <% categories.forEach(cat => { %>
+        <a href="/shop?category=<%= cat.id %>" class="cat-card">
+          <div class="cat-icon-svg"><%- categoryIconSvg(cat.id, 40) %></div>
+          <h3><%= cat.name %></h3>
+          <span>Shop the collection →</span>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

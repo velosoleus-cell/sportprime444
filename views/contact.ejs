@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section>
+  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:50px;">
+    <div>
+      <span class="tag" style="color:var(--red-bright);">Get In Touch</span>
+      <h2 style="margin:8px 0 14px;">Contact Sport Prime</h2>
+      <p style="color:var(--text-dim);margin-bottom:26px;max-width:400px;">Bulk orders, custom manufacturing, or just a question about sizing — send us a message and our team replies fast.</p>
+
+      <p style="margin-bottom:10px;">
+        <b>Email:</b>
+        <a class="contact-link" href="mailto:<%= settings.contactEmail %>"><%= settings.contactEmail %></a>
+      </p>
+      <p style="margin-bottom:10px;">
+        <b>WhatsApp:</b>
+        <a class="contact-link" href="https://wa.me/<%= settings.contactPhone %>" target="_blank" rel="noopener">
+          +<%= settings.contactPhone.slice(0,2) %> <%= settings.contactPhone.slice(2) %> — Chat on WhatsApp
+        </a>
+      </p>
+      <p style="margin-bottom:10px;">
+        <b>Instagram:</b>
+        <a class="contact-link" href="<%= settings.contactInstagram %>" target="_blank" rel="noopener">@sportsprime442</a>
+      </p>
+      <p><b>Location:</b> <span style="color:var(--text-dim);">Sialkot, Punjab, Pakistan</span></p>
+    </div>
+    <div class="form-panel">
+      <% if (message) { %><div class="alert success"><%= message %></div><% } %>
+      <% if (error) { %><div class="alert"><%= error %></div><% } %>
+      <form action="/contact" method="post">
+        <div class="field"><label>Full Name</label><input type="text" name="name" required></div>
+        <div class="field"><label>Email Address</label><input type="email" name="email" required></div>
+        <div class="field"><label>Message</label><textarea name="message" required></textarea></div>
+        <button type="submit" class="btn" style="width:100%;justify-content:center;">Send Message</button>
+      </form>
+      <p style="font-size:12px;color:var(--text-faint);margin-top:12px;">Your message goes straight to our team's inbox in the admin panel.</p>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

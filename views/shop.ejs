@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <div><span class="tag">Full Catalog</span><h2>All Products</h2></div>
+      <p>Filter by category to find exactly what you're training or playing in.</p>
+    </div>
+
+    <div class="filter-bar">
+      <a href="/shop" class="filter-chip <%= !activeCategory ? 'active' : '' %>">All</a>
+      <% categories.forEach(cat => { %>
+        <a href="/shop?category=<%= cat.id %>" class="filter-chip <%= activeCategory === cat.id ? 'active' : '' %>">
+          <%- categoryIconSvg(cat.id, 16) %> <%= cat.name %>
+        </a>
+      <% }) %>
+    </div>
+
+    <% if (productsWithPrice.length === 0) { %>
+      <p style="color:var(--text-faint);text-align:center;padding:50px;">No products in this category yet.</p>
+    <% } else { %>
+      <div class="prod-grid">
+        <% productsWithPrice.forEach(({p, sale}) => {
+          const onSale = settings.saleLive;
+        %>
+          <div class="prod-card">
+            <div class="prod-media">
+              <% if (onSale) { %><span class="sale-tag">-<%= settings.saleDiscount %>%</span><% } %>
+              <% if (p.stock <= 0) { %><span class="stock-tag">Out of Stock</span><% } %>
+              <% if (p.image) { %>
+                <img src="/uploads/<%= p.image %>" alt="<%= p.name %>">
+              <% } else { %>
+                <span class="cat-icon-svg"><%- categoryIconSvg(p.category, 56) %></span>
+              <% } %>
+            </div>
+            <div class="prod-body">
+              <span class="prod-cat"><%= categoryName(p.category) %></span>
+              <span class="prod-name"><%= p.name %></span>
+              <div class="prod-price-row">
+                <span class="prod-price <%= onSale ? 'sale' : '' %>"><%= money(sale) %></span>
+                <% if (onSale) { %><span class="prod-old-price"><%= money(p.price) %></span><% } %>
+              </div>
+              <div class="prod-actions">
+                <a href="/product/<%= p._id %>" class="btn ghost small" style="text-align:center;">Details</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

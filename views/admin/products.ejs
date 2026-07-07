@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head><%- include('../partials/head') %></head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+
+  <div class="admin-main">
+    <div class="admin-top">
+      <div><h2>Products</h2><p>Add, edit or remove items from your catalog — products can only be added here</p></div>
+      <a href="/admin/products/new" class="btn">+ Add Product</a>
+    </div>
+
+    <% if (message) { %><div class="alert success"><%= message %></div><% } %>
+
+    <div class="admin-toolbar">
+      <form action="/admin/products" method="get" style="display:flex;gap:10px;">
+        <input type="text" name="search" class="search-mini" placeholder="Search products..." value="<%= search %>">
+        <select name="category" class="search-mini" onchange="this.form.submit()">
+          <option value="">All Categories</option>
+          <% categories.forEach(c => { %>
+            <option value="<%= c.id %>" <%= activeCategory === c.id ? 'selected' : '' %>><%= c.name %></option>
+          <% }) %>
+        </select>
+        <button type="submit" class="btn small">Filter</button>
+      </form>
+    </div>
+
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead><tr><th></th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+        <tbody>
+          <% if (products.length === 0) { %>
+            <tr><td colspan="6" style="text-align:center;color:var(--text-faint);padding:30px;">No products found.</td></tr>
+          <% } else { products.forEach(p => { %>
+            <tr>
+              <td>
+                <div class="mini-thumb">
+                  <% if (p.image) { %><img src="/uploads/<%= p.image %>" alt=""><% } else { %><span class="cat-icon-svg"><%- categoryIconSvg(p.category, 20) %></span><% } %>
+                </div>
+              </td>
+              <td><%= p.name %></td>
+              <td><%= categoryName(p.category) %></td>
+              <td><%= money(p.price) %></td>
+              <td>
+                <% if (p.stock <= 0) { %><span style="color:#ff6b6b;">Out</span><% } else { %><%= p.stock %><% } %>
+              </td>
+              <td class="row-actions">
+                <a href="/admin/products/<%= p._id %>/edit" title="Edit">✏️</a>
+                <form action="/admin/products/<%= p._id %>/delete" method="post" onsubmit="return confirm('Delete this product?');">
+                  <button type="submit" title="Delete">🗑</button>
+                </form>
+              </td>
+            </tr>
+          <% }) } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>
